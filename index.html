@@ -201,6 +201,31 @@
             margin-top: 15px;
         }
 
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--link-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
         .node-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -347,8 +372,10 @@
 
             <h2>System Requirements</h2>
             <div class="alert alert-warn">
-                <strong>⚠️ Important:</strong> For post-processing effects (Bloom, Vignette, etc.), you need Post
-                Processing Stack V2 or URP/HDRP installed and configured on your Main Camera.
+                <strong>⚠️ Post Processing:</strong> For post-processing effects (Bloom, Vignette, etc.):<br>
+                • <strong>Built-in Render Pipeline:</strong> Post Processing Stack V2 ✅<br>
+                • <strong>URP:</strong> Built-in post-processing support ✅<br>
+                • <strong>HDRP:</strong> Coming in future updates 🔜
             </div>
 
             <h2>What's Included</h2>
@@ -427,7 +454,7 @@
             <p>Adjust these values to your liking!</p>
 
             <h2>Step 5: Call from Code</h2>
-            <pre><code>using UnityEngine;
+            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -598,7 +625,7 @@ public class Player : MonoBehaviour
             </ol>
 
             <h2>Using in Code</h2>
-            <pre><code>public FeedbackSequence hitEffect;
+            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>public FeedbackSequence hitEffect;
 
 void TakeDamage(float damage)
 {
@@ -1385,6 +1412,29 @@ void TakeDamage(float damage)
             const newTheme = current === 'dark' ? 'light' : 'dark';
             body.setAttribute('data-theme', newTheme);
             localStorage.setItem('epf_theme', newTheme);
+        }
+
+        function copyCode(button) {
+            const pre = button.parentElement;
+            const code = pre.querySelector('code');
+            const text = code.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                button.style.backgroundColor = '#28a745';
+
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                button.innerText = 'Failed';
+                setTimeout(() => {
+                    button.innerText = 'Copy';
+                }, 2000);
+            });
         }
 
         window.onload = function () {
