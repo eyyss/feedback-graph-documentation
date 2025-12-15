@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Peasy Feedback (EPF) | User Guide</title>
+    <style>
+        :root {
+            --sidebar-bg: #f5f5f5;
+            --content-bg: #ffffff;
+            --text-color: #333333;
+            --heading-color: #101010;
+            --link-color: #2196F3;
+            --code-bg: #f8f8f8;
+            --code-text: #c7254e;
+            --border-color: #e0e0e0;
+            --active-link-bg: #e0e0e0;
+            --card-bg: #ffffff;
+            --th-bg: #f9f9f9;
+        }
+
+        [data-theme="dark"] {
+            --sidebar-bg: #1e1e1e;
+            --content-bg: #121212;
+            --text-color: #e0e0e0;
+            --heading-color: #ffffff;
+            --link-color: #64b5f6;
+            --code-bg: #2d2d2d;
+            --code-text: #ff8a80;
+            --border-color: #333333;
+            --active-link-bg: #333333;
+            --card-bg: #1e1e1e;
+            --th-bg: #252525;
+        }
+
+        body {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--content-bg);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: #202020;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            padding: 0;
+            color: white;
+        }
+
+        .sidebar-header span {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        .nav-scroll {
+            overflow-y: auto;
+            padding: 10px 0;
+            flex: 1;
+        }
+
+        .nav-group {
+            padding: 15px 20px 5px 20px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 8px 20px 8px 30px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--active-link-bg);
+        }
+
+        .nav-item.active {
+            border-left-color: var(--link-color);
+            background-color: var(--active-link-bg);
+            font-weight: 600;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 100px;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 40px 100px 40px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 32px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            color: var(--heading-color);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: var(--heading-color);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            color: var(--link-color);
+        }
+
+        p,
+        li {
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: var(--code-text);
+            border: 1px solid var(--border-color);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            color: var(--text-color);
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .node-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--th-bg);
+            width: 30%;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-color);
+        }
+
+        .param-name {
+            font-family: Consolas, monospace;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 4px solid;
+            background: var(--code-bg);
+        }
+
+        .alert-info {
+            border-color: #2196F3;
+        }
+
+        .alert-warn {
+            border-color: #ffc107;
+        }
+
+        .alert-tip {
+            border-color: #28a745;
+        }
+
+        .theme-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                height: 100%;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .page {
+                padding: 80px 20px 80px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div>
+                <h1>Easy Peasy Feedback</h1>
+                <span>User Guide v2.0</span>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle Dark Mode">🌓</button>
+        </div>
+
+        <div class="nav-scroll">
+            <div class="nav-group">Getting Started</div>
+            <a class="nav-item active" onclick="openPage('page-intro')">Introduction</a>
+            <a class="nav-item" onclick="openPage('page-quickstart')">Quick Start Guide</a>
+            <a class="nav-item" onclick="openPage('page-editor')">Graph Editor</a>
+            <a class="nav-item" onclick="openPage('page-parameters')">Dynamic Parameters</a>
+
+            <div class="nav-group">Node Reference</div>
+            <a class="nav-item" onclick="openPage('page-camera')">Camera & Post Process</a>
+            <a class="nav-item" onclick="openPage('page-transform')">Transform & Springs</a>
+            <a class="nav-item" onclick="openPage('page-visual')">Visual Effects</a>
+            <a class="nav-item" onclick="openPage('page-audio')">Audio & Time</a>
+            <a class="nav-item" onclick="openPage('page-animation')">Animation</a>
+            <a class="nav-item" onclick="openPage('page-logic')">Logic & Utility</a>
+
+            <div class="nav-group">Advanced</div>
+            <a class="nav-item" onclick="openPage('page-tips')">Tips & Best Practices</a>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="contentWrapper">
+
+        <!-- INTRODUCTION -->
+        <div id="page-intro" class="page active">
+            <h1>🎮 Easy Peasy Feedback</h1>
+            <p><strong>Easy Peasy Feedback (EPF)</strong> is a powerful node-based system for creating "Game Feel" in
+                Unity. Build impressive visual and gameplay feedback with zero code!</p>
+
+            <h2>What is Game Feel?</h2>
+            <p>Game Feel is the tactile, visual, and audio response players get from their actions. EPF makes it easy to
+                add:</p>
+            <ul>
+                <li>🎥 <strong>Camera Effects</strong> - Shake, zoom, post-processing</li>
+                <li>✨ <strong>Visual Feedback</strong> - Particles, flashes, color changes</li>
+                <li>🎯 <strong>Motion</strong> - Smooth transforms with spring physics</li>
+                <li>🔊 <strong>Audio</strong> - Sound effects and time manipulation</li>
+                <li>🎬 <strong>Animation</strong> - Animator control and triggers</li>
+            </ul>
+
+            <h2>Key Features</h2>
+            <div class="node-card">
+                <ul>
+                    <li><strong>63 Ready-to-Use Nodes</strong> - No coding required</li>
+                    <li><strong>Visual Node Editor</strong> - Drag, drop, and connect</li>
+                    <li><strong>Real-time Preview</strong> - See effects while playing</li>
+                    <li><strong>Dynamic Parameters</strong> - Change values at runtime</li>
+                    <li><strong>Spring Physics</strong> - Natural, bouncy motion</li>
+                    <li><strong>Performance Optimized</strong> - Efficient execution</li>
+                </ul>
+            </div>
+
+            <h2>System Requirements</h2>
+            <div class="alert alert-warn">
+                <strong>⚠️ Important:</strong> For post-processing effects (Bloom, Vignette, etc.), you need Post
+                Processing Stack V2 or URP/HDRP installed and configured on your Main Camera.
+            </div>
+
+            <h2>What's Included</h2>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Count</th>
+                    <th>Examples</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Camera & Post</td>
+                    <td>12</td>
+                    <td>Shake, FOV Kick, Bloom, Vignette</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Transform</td>
+                    <td>11</td>
+                    <td>Move, Rotate, Scale, Springs</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Visual</td>
+                    <td>6</td>
+                    <td>Particles, Color Pulse, Lights</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Audio & Time</td>
+                    <td>4</td>
+                    <td>Sound, Time Freeze</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Animation</td>
+                    <td>4</td>
+                    <td>Animator Control</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Logic</td>
+                    <td>5</td>
+                    <td>Events, SetActive</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- QUICK START -->
+        <div id="page-quickstart" class="page">
+            <h1>🚀 Quick Start Guide</h1>
+
+            <h2>Step 1: Create a Feedback Sequence</h2>
+            <ol>
+                <li>Right-click in the <strong>Hierarchy</strong></li>
+                <li>Select <code>Easy Peasy Feedback</code> → <code>Feedback Sequence</code></li>
+                <li>A new GameObject will be created with the FeedbackSequence component</li>
+            </ol>
+
+            <h2>Step 2: Open the Graph Editor</h2>
+            <ol>
+                <li>Select the GameObject you just created</li>
+                <li>In the Inspector, click <strong>"Open Graph Editor"</strong></li>
+                <li>A new window will open showing an empty graph</li>
+            </ol>
+
+            <h2>Step 3: Add Your First Node</h2>
+            <ol>
+                <li><strong>Right-click</strong> in the graph area</li>
+                <li>Navigate to <code>Camera</code> → <code>Camera Shake</code></li>
+                <li>The node will appear in the graph</li>
+                <li>Click on it to see its parameters in the right sidebar</li>
+            </ol>
+
+            <h2>Step 4: Configure the Node</h2>
+            <p>With the Camera Shake node selected, you'll see:</p>
+            <ul>
+                <li><strong>Tag:</strong> "MainCamera" (the camera to shake)</li>
+                <li><strong>Duration:</strong> How long to shake (e.g., 0.4s)</li>
+                <li><strong>Power:</strong> Shake intensity (0-5)</li>
+            </ul>
+            <p>Adjust these values to your liking!</p>
+
+            <h2>Step 5: Call from Code</h2>
+            <pre><code>using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public FeedbackSequence hitEffect;
+    
+    void TakeDamage()
+    {
+        // Play the feedback!
+        hitEffect.Play();
+    }
+}</code></pre>
+
+            <h2>Step 6: Test It!</h2>
+            <ol>
+                <li>Enter <strong>Play Mode</strong></li>
+                <li>Trigger your code (e.g., take damage)</li>
+                <li>Watch the camera shake!</li>
+                <li>You'll see a green progress bar on the node while it's playing</li>
+            </ol>
+
+            <div class="alert alert-tip">
+                <strong>💡 Pro Tip:</strong> You can test individual nodes in Play Mode by clicking the ▶ button on the
+                node!
+            </div>
+        </div>
+
+        <!-- GRAPH EDITOR -->
+        <div id="page-editor" class="page">
+            <h1>📊 Graph Editor Guide</h1>
+
+            <h2>Navigation</h2>
+            <table>
+                <tr>
+                    <th>Action</th>
+                    <th>Control</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Zoom</td>
+                    <td>Scroll Wheel</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Pan</td>
+                    <td>Middle Mouse OR Alt + Left Click</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Center View</td>
+                    <td>"Center" button in toolbar</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Mini Map</td>
+                    <td>Toggle with map icon</td>
+                </tr>
+            </table>
+
+            <h2>Working with Nodes</h2>
+            <table>
+                <tr>
+                    <th>Action</th>
+                    <th>Control</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Add Node</td>
+                    <td>Right-click → Select category</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Select</td>
+                    <td>Left-click</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Multi-Select</td>
+                    <td>Shift/Ctrl + Click</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Move</td>
+                    <td>Click and drag</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Delete</td>
+                    <td>Delete key</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Copy/Paste</td>
+                    <td>Ctrl+C / Ctrl+V</td>
+                </tr>
+            </table>
+
+            <h2>Node Properties</h2>
+            <p>Every node has these common settings:</p>
+            <div class="node-card">
+                <table>
+                    <tr>
+                        <th>Property</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Active</td>
+                        <td>Enable/disable this node</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Auto Play</td>
+                        <td>Play when sequence starts</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Name</td>
+                        <td>Custom label for organization</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Delay</td>
+                        <td>Wait time before executing</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Loops</td>
+                        <td>Repeat count (-1 = infinite)</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Loop Delay</td>
+                        <td>Time between loops</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">Chance</td>
+                        <td>0-100% probability to execute</td>
+                    </tr>
+                    <tr>
+                        <td class="param-name">On Complete</td>
+                        <td>Unity Event when finished</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h2>Visual Indicators</h2>
+            <ul>
+                <li><strong>Bright Node:</strong> Active and ready</li>
+                <li><strong>Dimmed Node:</strong> Inactive (won't execute)</li>
+                <li><strong>Yellow Outline:</strong> Waiting (delay phase)</li>
+                <li><strong>Green Outline:</strong> Currently executing</li>
+                <li><strong>Progress Bar:</strong> Shows execution progress</li>
+            </ul>
+        </div>
+
+        <!-- PARAMETERS -->
+        <div id="page-parameters" class="page">
+            <h1>🔗 Dynamic Parameters</h1>
+            <p>Parameters let you change node values at runtime - perfect for adaptive feedback!</p>
+
+            <h2>What Are Parameters?</h2>
+            <p>Instead of fixed values, you can link node properties to <strong>parameters</strong> that you control
+                from code.</p>
+
+            <div class="alert alert-info">
+                <strong>Example:</strong> Link camera shake power to damage amount - bigger hits = stronger shake!
+            </div>
+
+            <h2>Creating Parameters</h2>
+            <ol>
+                <li>Find the <strong>Parameters</strong> node in your graph (auto-created)</li>
+                <li>Select it and click <strong>"Add Parameter"</strong></li>
+                <li>Choose a type (Float, Int, Color, etc.)</li>
+                <li>Give it a name like "shakePower"</li>
+            </ol>
+
+            <h2>Linking to Nodes</h2>
+            <ol>
+                <li>Select any node (e.g., Camera Shake)</li>
+                <li>Find a parameter (e.g., Power)</li>
+                <li>Click the 🔗 icon next to it</li>
+                <li>Type your parameter name OR use the dropdown (▼)</li>
+                <li>The field turns <span style="color: orange;">orange</span> when linked!</li>
+            </ol>
+
+            <h2>Using in Code</h2>
+            <pre><code>public FeedbackSequence hitEffect;
+
+void TakeDamage(float damage)
+{
+    // Set parameter based on damage
+    hitEffect.Set("shakePower", damage / 10f);
+    
+    // Play the effect
+    hitEffect.Play();
+}</code></pre>
+
+            <h2>Supported Types</h2>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Use For</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Float</td>
+                    <td>Durations, intensities, speeds</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Int</td>
+                    <td>Counts, indices</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Bool</td>
+                    <td>On/off switches</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Vector3</td>
+                    <td>Positions, directions, scales</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Visual colors</td>
+                </tr>
+                <tr>
+                    <td class="param-name">GameObject</td>
+                    <td>Dynamic targets</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Transform</td>
+                    <td>Position/rotation targets</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- CAMERA & POST PROCESS -->
+        <div id="page-camera" class="page">
+            <h1>📷 Camera & Post Process Nodes</h1>
+
+            <h2>Camera Shake</h2>
+            <p>Shakes the camera for impact feedback.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Tag</td>
+                    <td>Camera tag (default: "MainCamera")</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>How long to shake (seconds)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Power</td>
+                    <td>Shake intensity (0-5)</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Player takes damage, explosions, landing from height
+            </div>
+
+            <h2>FOV Kick</h2>
+            <p>Temporarily changes camera field of view.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Zoom Amount</td>
+                    <td>Negative = zoom in, Positive = zoom out</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Curve</td>
+                    <td>Animation curve</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Sprint, dash, focus mode
+            </div>
+
+            <h2>Bloom Pulse</h2>
+            <p>Flashes bright areas for dramatic effect.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Add Intensity</td>
+                    <td>Bloom amount to add (0-50)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Threshold</td>
+                    <td>Brightness threshold (0-2)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Flash duration</td>
+                </tr>
+            </table>
+
+            <h2>Vignette Pulse</h2>
+            <p>Darkens screen edges.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Intensity</td>
+                    <td>Darkness amount (0-1)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Vignette color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Low health, danger zones, dramatic moments
+            </div>
+
+            <h2>Chromatic Aberration</h2>
+            <p>Color split effect for glitch/impact.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Intensity</td>
+                    <td>Color split amount (0-5)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
+
+            <h2>Screen Flash</h2>
+            <p>Full-screen color flash overlay.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Flash color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Alpha Max</td>
+                    <td>Maximum opacity (0-1)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Flash duration</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Damage flash (red), heal flash (green), teleport (white)
+            </div>
+        </div>
+
+        <!-- TRANSFORM & SPRINGS -->
+        <div id="page-transform" class="page">
+            <h1>🔄 Transform & Spring Nodes</h1>
+
+            <h2>Move To</h2>
+            <p>Smoothly moves an object to a position.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to move</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Position</td>
+                    <td>Target position (Vector3)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Movement time</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Additive</td>
+                    <td>If true, adds to current position</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Curve</td>
+                    <td>Movement curve</td>
+                </tr>
+            </table>
+
+            <h2>Rotate To</h2>
+            <p>Smoothly rotates an object.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to rotate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Rotation</td>
+                    <td>Target rotation (Euler angles)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Rotation time</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Additive</td>
+                    <td>If true, adds to current rotation</td>
+                </tr>
+            </table>
+
+            <h2>Squash & Stretch</h2>
+            <p>Classic animation principle - bouncy scale effect.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to animate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Frequency</td>
+                    <td>Bounce speed (5-50)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Power</td>
+                    <td>Y-axis scale multiplier</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Fade Out</td>
+                    <td>Gradually reduce intensity</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Jumping, landing, collecting items
+            </div>
+
+            <h2>Scale Spring</h2>
+            <p>Bouncy scale animation with spring physics.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to scale</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Mode</td>
+                    <td>MoveTo (stays) or Punch (returns)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Scale Add</td>
+                    <td>Amount to add to scale</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Frequency</td>
+                    <td>Spring speed (1-20)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Damping</td>
+                    <td>Friction (0-1.5)</td>
+                </tr>
+            </table>
+
+            <h2>Position Spring</h2>
+            <p>Bouncy position movement.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Amount</td>
+                    <td>Vector3 displacement</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Frequency</td>
+                    <td>Spring speed</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Damping</td>
+                    <td>Friction</td>
+                </tr>
+            </table>
+            <div class="alert alert-info">
+                <strong>Spring Tips:</strong> Higher frequency = faster bounce. Lower damping = more bouncy.
+            </div>
+        </div>
+
+        <!-- VISUAL EFFECTS -->
+        <div id="page-visual" class="page">
+            <h1>✨ Visual Effect Nodes</h1>
+
+            <h2>Particle Spawn</h2>
+            <p>Spawns a particle effect at a location.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Prefab</td>
+                    <td>Particle system prefab</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Destroy</td>
+                    <td>Auto-destroy when finished</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Pos Mode</td>
+                    <td>Transform or Coordinates</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Spawn Point</td>
+                    <td>Where to spawn</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Hit effects, explosions, magic spells
+            </div>
+
+            <h2>Particle Play</h2>
+            <p>Plays an existing particle system.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Particle system to play</td>
+                </tr>
+                <tr>
+                    <td class="param-name">With Children</td>
+                    <td>Play child systems too</td>
+                </tr>
+            </table>
+
+            <h2>Color & Emission Pulse</h2>
+            <p>Pulses object color and emission.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object with Renderer</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Target albedo color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Emission</td>
+                    <td>Target emission color (HDR)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Pulses</td>
+                    <td>Number of pulses (1-10)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Total duration</td>
+                </tr>
+            </table>
+
+            <h2>Light Pulse</h2>
+            <p>Animates light color and intensity.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Light component</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Target color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Intensity</td>
+                    <td>Target intensity</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Transition time</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Flickering torches, alarm lights, power-ups
+            </div>
+        </div>
+
+        <!-- AUDIO & TIME -->
+        <div id="page-audio" class="page">
+            <h1>🔊 Audio & Time Nodes</h1>
+
+            <h2>Play Sound</h2>
+            <p>Plays an audio clip.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Audio Clip</td>
+                    <td>Sound file to play</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Volume</td>
+                    <td>Volume (0-1)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">2D / 3D</td>
+                    <td>Spatial blend (0=2D, 1=3D)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Point</td>
+                    <td>3D position (if spatial)</td>
+                </tr>
+            </table>
+
+            <h2>Random Sound</h2>
+            <p>Plays a random sound from a list.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Audio Clips</td>
+                    <td>List of sounds</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Random Pitch</td>
+                    <td>Vary pitch for variety</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Pitch Range</td>
+                    <td>Min/Max pitch (e.g., 0.9-1.1)</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Footsteps, hits, UI clicks - variety prevents repetition!
+            </div>
+
+            <h2>Time Freeze</h2>
+            <p>Slows or freezes time.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Speed</td>
+                    <td>Time scale (0 = frozen, 1 = normal)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Real-time duration</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Bullet time, critical hits, dramatic moments
+            </div>
+
+            <h2>Time Scale Ramp</h2>
+            <p>Gradually changes time speed.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target Speed</td>
+                    <td>Speed to reach</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Ramp duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Curve</td>
+                    <td>Ramp curve</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ANIMATION -->
+        <div id="page-animation" class="page">
+            <h1>🎬 Animation Nodes</h1>
+
+            <h2>Animator Parameter</h2>
+            <p>Sets an Animator parameter.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Animator component</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Parameter</td>
+                    <td>Parameter name</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Type</td>
+                    <td>Trigger, Bool, Int, or Float</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Value</td>
+                    <td>Value to set</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Trigger attack animation, set speed, toggle states
+            </div>
+
+            <h2>Animator Play</h2>
+            <p>Directly plays an animation state.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">State</td>
+                    <td>State name to play</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Layer</td>
+                    <td>Animation layer index</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Time</td>
+                    <td>Normalized time (0-1)</td>
+                </tr>
+            </table>
+
+            <h2>Animator CrossFade</h2>
+            <p>Smoothly transitions to a state.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">State</td>
+                    <td>Target state name</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Blend</td>
+                    <td>Transition duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Layer</td>
+                    <td>Layer index</td>
+                </tr>
+            </table>
+
+            <h2>Animator Speed</h2>
+            <p>Changes animation playback speed.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Speed</td>
+                    <td>Playback multiplier</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Revert After</td>
+                    <td>Auto-reset after X seconds</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Slow-mo attacks, speed boosts, dramatic finishers
+            </div>
+        </div>
+
+        <!-- LOGIC -->
+        <div id="page-logic" class="page">
+            <h1>⚙️ Logic & Utility Nodes</h1>
+
+            <h2>Unity Event</h2>
+            <p>Triggers a Unity Event - call any function!</p>
+            <div class="alert alert-info">
+                <strong>Powerful:</strong> Use this to call methods on other scripts, trigger game events, etc.
+            </div>
+
+            <h2>Set Active</h2>
+            <p>Enables or disables a GameObject.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>GameObject to toggle</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Set Active</td>
+                    <td>True = enable, False = disable</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Revert After</td>
+                    <td>Auto-revert after X seconds</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Show/hide UI, toggle effects, activate objects
+            </div>
+
+            <h2>Destroy Object</h2>
+            <p>Destroys a GameObject.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to destroy (empty = self)</td>
+                </tr>
+            </table>
+
+            <h2>Loop Sequence</h2>
+            <p>Plays another sequence repeatedly.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target Sequence</td>
+                    <td>Sequence to loop</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Infinite</td>
+                    <td>Loop forever?</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Count</td>
+                    <td>Number of loops</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Interval</td>
+                    <td>Delay between loops</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Repeating effects, alarms, continuous feedback
+            </div>
+        </div>
+
+        <!-- TIPS & BEST PRACTICES -->
+        <div id="page-tips" class="page">
+            <h1>💡 Tips & Best Practices</h1>
+
+            <h2>Performance Tips</h2>
+            <ul>
+                <li><strong>Reuse Sequences:</strong> Create one sequence, use it many times</li>
+                <li><strong>Pool Particles:</strong> Use object pooling for frequently spawned effects</li>
+                <li><strong>Limit Loops:</strong> Avoid infinite loops in production</li>
+                <li><strong>Disable Inactive Nodes:</strong> Turn off nodes you're not using</li>
+            </ul>
+
+            <h2>Organization Tips</h2>
+            <ul>
+                <li><strong>Name Your Nodes:</strong> Use the custom name field for clarity</li>
+                <li><strong>Group by Purpose:</strong> Keep related nodes together</li>
+                <li><strong>Use Folders:</strong> Organize sequences in project folders</li>
+                <li><strong>Comment with Events:</strong> Use OnComplete events as "comments"</li>
+            </ul>
+
+            <h2>Design Tips</h2>
+            <ul>
+                <li><strong>Layer Effects:</strong> Combine multiple nodes for rich feedback</li>
+                <li><strong>Timing is Key:</strong> Use delays to create rhythm</li>
+                <li><strong>Less is More:</strong> Don't overdo it - subtle can be powerful</li>
+                <li><strong>Test in Context:</strong> Effects should feel good in actual gameplay</li>
+            </ul>
+
+            <h2>Common Patterns</h2>
+
+            <h3>Hit Feedback</h3>
+            <ul>
+                <li>Camera Shake (small, 0.2s)</li>
+                <li>Screen Flash (red, quick)</li>
+                <li>Time Freeze (0.1s pause)</li>
+                <li>Hit Sound</li>
+            </ul>
+
+            <h3>Jump Feedback</h3>
+            <ul>
+                <li>Squash & Stretch (on player)</li>
+                <li>Particle Spawn (dust cloud)</li>
+                <li>Jump Sound</li>
+                <li>FOV Kick (slight zoom out)</li>
+            </ul>
+
+            <h3>Power-Up Feedback</h3>
+            <ul>
+                <li>Bloom Pulse</li>
+                <li>Color & Emission Pulse</li>
+                <li>Scale Spring (grow)</li>
+                <li>Power-up Sound</li>
+                <li>Particle effects</li>
+            </ul>
+
+            <div class="alert alert-tip">
+                <strong>Pro Tip:</strong> Study games you love - what makes their feedback feel good? Try to recreate
+                it!
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+
+            const clickedBtn = Array.from(document.querySelectorAll('.nav-item')).find(item => item.getAttribute('onclick').includes(pageId));
+            if (clickedBtn) clickedBtn.classList.add('active');
+
+            document.getElementById('contentWrapper').scrollTop = 0;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('epf_theme', newTheme);
+        }
+
+        window.onload = function () {
+            if (localStorage.getItem('epf_theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        };
+    </script>
+</body>
+
+</html>
