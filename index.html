@@ -398,8 +398,8 @@
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div>
-                <h1>Easy Peasy Feedback</h1>
-                <span>User Guide v2.0</span>
+                <h1>Feedback Graph</h1>
+                <span>User Guide v1.0</span>
             </div>
             <button class="theme-btn" onclick="toggleTheme()" title="Toggle Dark Mode">🌓</button>
         </div>
@@ -418,6 +418,9 @@
             <a class="nav-item" onclick="openPage('page-audio')">Audio & Time</a>
             <a class="nav-item" onclick="openPage('page-animation')">Animation</a>
             <a class="nav-item" onclick="openPage('page-logic')">Logic & Utility</a>
+            <a class="nav-item" onclick="openPage('page-physics')">Physics</a>
+            <a class="nav-item" onclick="openPage('page-cinemachine')">Cinemachine</a>
+            <a class="nav-item" onclick="openPage('page-ui')">UI & Canvas</a>
 
             <div class="nav-group">Advanced</div>
             <a class="nav-item" onclick="openPage('page-tips')">Tips & Best Practices</a>
@@ -482,23 +485,43 @@
                 </tr>
                 <tr>
                     <td class="param-name">Visual</td>
-                    <td>6</td>
-                    <td>Particles, Color Pulse, Lights</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Audio & Time</td>
-                    <td>4</td>
-                    <td>Sound, Time Freeze</td>
+                    <td>7</td>
+                    <td>Particles, Color Pulse, Lights, Floating Text</td>
                 </tr>
                 <tr>
                     <td class="param-name">Animation</td>
-                    <td>4</td>
-                    <td>Animator Control</td>
+                    <td>7</td>
+                    <td>Animators, CrossFades, Speed</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Audio</td>
+                    <td>3</td>
+                    <td>Play, Random, Volume</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Time</td>
+                    <td>2</td>
+                    <td>Freeze, Scale Ramp</td>
                 </tr>
                 <tr>
                     <td class="param-name">Logic</td>
-                    <td>5</td>
-                    <td>Events, SetActive</td>
+                    <td>9</td>
+                    <td>Events, SetActive, Branch, Debug</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Physics</td>
+                    <td>1</td>
+                    <td>Explosion</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Cinemachine</td>
+                    <td>2</td>
+                    <td>Impulse, Noise</td>
+                </tr>
+                <tr>
+                    <td class="param-name">UI</td>
+                    <td>8</td>
+                    <td>Fade, Move, Scale, Shake, Counter</td>
                 </tr>
             </table>
         </div>
@@ -662,10 +685,6 @@ public class Player : MonoBehaviour
                         <td class="param-name">Chance</td>
                         <td>0-100% probability to execute</td>
                     </tr>
-                    <tr>
-                        <td class="param-name">On Complete</td>
-                        <td>Unity Event when finished</td>
-                    </tr>
                 </table>
             </div>
 
@@ -760,10 +779,9 @@ void TakeDamage(float damage)
 
         <!-- CAMERA & POST PROCESS -->
         <div id="page-camera" class="page">
-            <h1>📷 Camera & Post Process Nodes</h1>
-
+            <h1>📷 Camera & Post Process</h1>
             <h2>Camera Shake</h2>
-            <p>Shakes the camera for impact feedback.</p>
+            <p>Shakes the camera.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -771,44 +789,34 @@ void TakeDamage(float damage)
                 </tr>
                 <tr>
                     <td class="param-name">Tag</td>
-                    <td>Camera tag (default: "MainCamera")</td>
+                    <td>Tag of camera to shake</td>
                 </tr>
                 <tr>
                     <td class="param-name">Duration</td>
-                    <td>How long to shake (seconds)</td>
+                    <td>Shake duration</td>
                 </tr>
                 <tr>
                     <td class="param-name">Power</td>
-                    <td>Shake intensity (0-5)</td>
+                    <td>Shake intensity</td>
                 </tr>
             </table>
-            <div class="alert alert-tip">
-                <strong>Use Case:</strong> Player takes damage, explosions, landing from height
-            </div>
 
             <h2>FOV Kick</h2>
-            <p>Temporarily changes camera field of view.</p>
+            <p>Temporarily changes Field of View.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <td class="param-name">Zoom Amount</td>
-                    <td>Negative = zoom in, Positive = zoom out</td>
+                    <td class="param-name">Add FOV</td>
+                    <td>Amount to add to current FOV</td>
                 </tr>
                 <tr>
                     <td class="param-name">Duration</td>
-                    <td>Effect duration</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Curve</td>
-                    <td>Animation curve</td>
+                    <td>Kick duration</td>
                 </tr>
             </table>
-            <div class="alert alert-tip">
-                <strong>Use Case:</strong> Sprint, dash, focus mode
-            </div>
 
             <h2>Bloom Pulse</h2>
             <p>Flashes bright areas for dramatic effect.</p>
@@ -873,7 +881,7 @@ void TakeDamage(float damage)
             </table>
 
             <h2>Screen Flash</h2>
-            <p>Full-screen color flash overlay.</p>
+            <p>Flashes a UI image (full screen) color.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -884,10 +892,6 @@ void TakeDamage(float damage)
                     <td>Flash color</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Alpha Max</td>
-                    <td>Maximum opacity (0-1)</td>
-                </tr>
-                <tr>
                     <td class="param-name">Duration</td>
                     <td>Flash duration</td>
                 </tr>
@@ -895,14 +899,134 @@ void TakeDamage(float damage)
             <div class="alert alert-tip">
                 <strong>Use Case:</strong> Damage flash (red), heal flash (green), teleport (white)
             </div>
+            <h2>Ambient Occlusion Pulse</h2>
+            <p>Pulses the Ambient Occlusion intensity (Post Processing).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Add Intensity</td>
+                    <td>Amount to add to current AO</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Pulse duration</td>
+                </tr>
+            </table>
+
+            <h2>Depth of Field</h2>
+            <p>Animates focus distance and blur amount.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Focus Dist</td>
+                    <td>Target focus distance</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Blur Amount</td>
+                    <td>Target blur strength</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
+
+            <h2>Grain Pulse</h2>
+            <p>Adds film grain temporarily.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Add Intens.</td>
+                    <td>Grain intensity to add</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Size</td>
+                    <td>Grain particle size</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
+
+            <h2>Hue Shift (Rainbow)</h2>
+            <p>Shifts the screen colors (Hue) over time.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Shift Amount</td>
+                    <td>Degrees to shift hue (-180 to 180)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
+
+            <h2>Lens Distortion</h2>
+            <p>Distorts the lens (barrel or pincushion effect).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Intensity</td>
+                    <td>Distortion amount (-100 to 100)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Scale Mult</td>
+                    <td>Zooms in/out to hide edges</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Effect duration</td>
+                </tr>
+            </table>
         </div>
 
         <!-- TRANSFORM & SPRINGS -->
         <div id="page-transform" class="page">
-            <h1>🔄 Transform & Spring Nodes</h1>
+            <h1>🔄 Transform & Springs</h1>
+            <h2>Move To / Rotate To</h2>
+            <p>Moves or rotates an object to a specific target.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to move/rotate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Destination</td>
+                    <td>Target Position/Rotation</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Transition time</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Space</td>
+                    <td>World or Local</td>
+                </tr>
+            </table>
 
-            <h2>Move To</h2>
-            <p>Smoothly moves an object to a position.</p>
+            <h2>Position Pulse</h2>
+            <p>Pulses an object's position (moves away and returns).</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -913,20 +1037,12 @@ void TakeDamage(float damage)
                     <td>Object to move</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Position</td>
-                    <td>Target position (Vector3)</td>
+                    <td class="param-name">Amount</td>
+                    <td>Offset vector</td>
                 </tr>
                 <tr>
                     <td class="param-name">Duration</td>
-                    <td>Movement time</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Additive</td>
-                    <td>If true, adds to current position</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Curve</td>
-                    <td>Movement curve</td>
+                    <td>Pulse duration</td>
                 </tr>
             </table>
 
@@ -1039,14 +1155,135 @@ void TakeDamage(float damage)
             <div class="alert alert-info">
                 <strong>Spring Tips:</strong> Higher frequency = faster bounce. Lower damping = more bouncy.
             </div>
+
+            <h2>Rotation Pulse</h2>
+            <p>Pulses an object's rotation (rotates and returns).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to rotate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Amount</td>
+                    <td>Rotation Euler vector</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Pulse duration</td>
+                </tr>
+            </table>
+
+            <h2>Scale Pulse</h2>
+            <p>Pulses an object's scale (grows/shrinks and returns).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to scale</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Amount</td>
+                    <td>Scale vector to add</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Pulse duration</td>
+                </tr>
+            </table>
+
+            <h2>Scale To</h2>
+            <p>Smoothly scales an object to a specific size.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to scale</td>
+                </tr>
+                <tr>
+                    <td class="param-name">To Scale</td>
+                    <td>Target scale vector</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Is Relative</td>
+                    <td>If true, adds to start scale</td>
+                </tr>
+            </table>
+
+            <h2>Rotation Spring</h2>
+            <p>Bouncy rotation using spring physics.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to rotate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Spring Amount</td>
+                    <td>Rotational force/destination</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Mode</td>
+                    <td>Punch or MoveTo</td>
+                </tr>
+            </table>
+
+            <h2>Squash & Stretch (Simple)</h2>
+            <p>Simple squash animation without spring physics.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Axis</td>
+                    <td>Squash axis</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Amount</td>
+                    <td>Deformation amount</td>
+                </tr>
+            </table>
+
+            <h2>Squash & Stretch Spring</h2>
+            <p>Advanced squash and stretch with spring physics.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Object to animate</td>
+                </tr>
+                <tr>
+                    <td class="param-name">To Squash</td>
+                    <td>Squash intensity</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Mode</td>
+                    <td>Punch or MoveTo</td>
+                </tr>
+            </table>
         </div>
 
         <!-- VISUAL EFFECTS -->
         <div id="page-visual" class="page">
-            <h1>✨ Visual Effect Nodes</h1>
-
-            <h2>Particle Spawn</h2>
-            <p>Spawns a particle effect at a location.</p>
+            <h1>✨ Visual Effects</h1>
+            <h2>Particle Spawn / Play</h2>
+            <p>Spawns or plays a Particle System.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -1054,19 +1291,15 @@ void TakeDamage(float damage)
                 </tr>
                 <tr>
                     <td class="param-name">Prefab</td>
-                    <td>Particle system prefab</td>
+                    <td>Particle System prefab</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Destroy</td>
-                    <td>Auto-destroy when finished</td>
+                    <td class="param-name">Position</td>
+                    <td>Spawn location</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Pos Mode</td>
-                    <td>Transform or Coordinates</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Spawn Point</td>
-                    <td>Where to spawn</td>
+                    <td class="param-name">Auto Destroy</td>
+                    <td>Destroy after play</td>
                 </tr>
             </table>
             <div class="alert alert-tip">
@@ -1120,7 +1353,77 @@ void TakeDamage(float damage)
             </table>
 
             <h2>Light Pulse</h2>
-            <p>Animates light color and intensity.</p>
+            <p>Pulses a light's color and intensity.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Intensity</td>
+                    <td>From / To intensity</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>From / To color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Pulse duration</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Flickering torches, alarm lights, power-ups
+            </div>
+
+            <h2>Floating Text</h2>
+            <p>Spawns animated floating text at a position (damage numbers, scores, etc.).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Text</td>
+                    <td>Text content to display</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Spawn At</td>
+                    <td>Transform position to spawn text</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Text color (or use Random Color)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Font Size</td>
+                    <td>Min/Max size range for randomization</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>How long the text animates</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Up Amount</td>
+                    <td>Vertical travel distance</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Spread</td>
+                    <td>Horizontal random spread</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Rot Rnd</td>
+                    <td>Random rotation strength</td>
+                </tr>
+            </table>
+            <div class="alert alert-info">
+                <strong>Setup Required:</strong> Add a FloatingTextManager to your scene and assign a default prefab.
+            </div>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Damage numbers, score popups, XP gains, critical hits
+            </div>
+            <h2>Renderer Flash</h2>
+            <p>Flashes a Renderer's material color or emission.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -1128,52 +1431,61 @@ void TakeDamage(float damage)
                 </tr>
                 <tr>
                     <td class="param-name">Target</td>
-                    <td>Light component</td>
+                    <td>GameObject with Renderer</td>
                 </tr>
                 <tr>
                     <td class="param-name">Color</td>
-                    <td>Target color</td>
+                    <td>Flash color</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Intensity</td>
-                    <td>Target intensity</td>
+                    <td class="param-name">Use Emission</td>
+                    <td>Flash emission property</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Duration</td>
-                    <td>Transition time</td>
+                    <td class="param-name">Recursive</td>
+                    <td>Include child objects</td>
                 </tr>
             </table>
-            <div class="alert alert-tip">
-                <strong>Use Case:</strong> Flickering torches, alarm lights, power-ups
-            </div>
-        </div>
 
-        <!-- AUDIO & TIME -->
-        <div id="page-audio" class="page">
-            <h1>🔊 Audio & Time Nodes</h1>
-
-            <h2>Play Sound</h2>
-            <p>Plays an audio clip.</p>
+            <h2>Material Set Property</h2>
+            <p>Animates any float, color, or vector property on a material.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
                     <th>Description</th>
                 </tr>
                 <tr>
-                    <td class="param-name">Audio Clip</td>
-                    <td>Sound file to play</td>
+                    <td class="param-name">Prop Name</td>
+                    <td>Shader property (e.g. _BaseColor)</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Volume</td>
-                    <td>Volume (0-1)</td>
+                    <td class="param-name">Type</td>
+                    <td>Float, Color, or Vector</td>
                 </tr>
                 <tr>
-                    <td class="param-name">2D / 3D</td>
-                    <td>Spatial blend (0=2D, 1=3D)</td>
+                    <td class="param-name">Start/End</td>
+                    <td>Values to animate between</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- AUDIO & TIME -->
+        <div id="page-audio" class="page">
+            <h1>🔊 Audio & Time</h1>
+            <h2>Audio Source Play</h2>
+            <p>Plays a clip on an AudioSource.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
                 </tr>
                 <tr>
-                    <td class="param-name">Point</td>
-                    <td>3D position (if spatial)</td>
+                    <td class="param-name">Target</td>
+                    <td>AudioSource</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Clip</td>
+                    <td>Audio Clip to play (optional)</td>
                 </tr>
             </table>
 
@@ -1343,13 +1655,23 @@ void TakeDamage(float damage)
             <h1>⚙️ Logic & Utility Nodes</h1>
 
             <h2>Unity Event</h2>
-            <p>Triggers a Unity Event - call any function!</p>
+            <p>Invokes a UnityEvent (good for custom code).</p>
             <div class="alert alert-info">
                 <strong>Powerful:</strong> Use this to call methods on other scripts, trigger game events, etc.
             </div>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Event</td>
+                    <td>Standard Unity Event list</td>
+                </tr>
+            </table>
 
             <h2>Set Active</h2>
-            <p>Enables or disables a GameObject.</p>
+            <p>Activates or Deactivates a GameObject.</p>
             <table>
                 <tr>
                     <th>Parameter</th>
@@ -1357,17 +1679,18 @@ void TakeDamage(float damage)
                 </tr>
                 <tr>
                     <td class="param-name">Target</td>
-                    <td>GameObject to toggle</td>
+                    <td>GameObject</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Set Active</td>
-                    <td>True = enable, False = disable</td>
+                    <td class="param-name">State</td>
+                    <td>Active / Inactive</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Revert After</td>
-                    <td>Auto-revert after X seconds</td>
+                    <td class="param-name">Delay Revert</td>
+                    <td>If > 0, reverts state after time</td>
                 </tr>
             </table>
+
             <div class="alert alert-tip">
                 <strong>Use Case:</strong> Show/hide UI, toggle effects, activate objects
             </div>
@@ -1382,6 +1705,253 @@ void TakeDamage(float damage)
                 <tr>
                     <td class="param-name">Target</td>
                     <td>Object to destroy (empty = self)</td>
+                </tr>
+            </table>
+            <h2>Debug Log</h2>
+            <p>Prints a message to the Unity Console.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Message</td>
+                    <td>Text to log</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Mode</td>
+                    <td>Info, Warning, or Error</td>
+                </tr>
+            </table>
+
+            <h2>Random Branch</h2>
+            <p>Randomly activates one of multiple outputs based on chance.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Options</td>
+                    <td>List of chances and target nodes</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Chance %</td>
+                    <td>Probability for each branch</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PHYSICS -->
+        <div id="page-physics" class="page">
+            <h1>⚛️ Physics Nodes</h1>
+            <h2>Physics Explosion</h2>
+            <p>Applies explosion force to Rigidbodies.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Mode</td>
+                    <td>3D or 2D Physics</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Center</td>
+                    <td>Explosion origin transform</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Radius</td>
+                    <td>Explosion radius</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Force</td>
+                    <td>Explosion force strength</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Layers</td>
+                    <td>LayerMask for affected objects</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- CINEMACHINE -->
+        <div id="page-cinemachine" class="page">
+            <h1>🎥 Cinemachine Nodes</h1>
+            <h2>Cinemachine Impulse</h2>
+            <p>Triggers a Cinemachine Impulse Source (Shake).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Source</td>
+                    <td>Object with ImpulseSource component</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Direction</td>
+                    <td>Shake direction/velocity</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Force</td>
+                    <td>Impact multiplier</td>
+                </tr>
+            </table>
+
+            <h2>Cinemachine Noise</h2>
+            <p>Controls noise parameters on a virtual camera.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Camera</td>
+                    <td>Virtual Camera object</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Amplitude</td>
+                    <td>Target Noise Amplitude</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Frequency</td>
+                    <td>Target Noise Frequency</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Transition duration</td>
+                </tr>
+            </table>
+            <div class="alert alert-info">
+                <strong>Coming Soon:</strong> More Cinemachine nodes are in development, including additional camera
+                control features and effects.
+            </div>
+        </div>
+
+        <!-- UI -->
+        <div id="page-ui" class="page">
+            <h1>🖥️ UI & Canvas Nodes</h1>
+
+            <h2>Canvas Group Fade</h2>
+            <p>Fades a UI element (and children) using CanvasGroup.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>UI Object</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Alpha</td>
+                    <td>Start and End opacity (0-1)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Raycasts</td>
+                    <td>Auto-toggle blocksRaycasts</td>
+                </tr>
+            </table>
+
+            <h2>UI Graphic Color</h2>
+            <p>Animates the color of an Image or Text.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>UI Object (Image/Text)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Start and End colors</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Animation time</td>
+                </tr>
+            </table>
+
+            <h2>UI Image Fill</h2>
+            <p>Animates a Filled Image (Health bars, etc.).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Image (must be Type: Filled)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Fill Amount</td>
+                    <td>Start and End fill (0-1)</td>
+                </tr>
+            </table>
+
+            <h2>UI Move / Scale / Rotate</h2>
+            <p>Tweens for RectTransforms.</p>
+            <table>
+                <tr>
+                    <th>Node</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">UI Move</td>
+                    <td>Animates Anchored Position</td>
+                </tr>
+                <tr>
+                    <td class="param-name">UI Scale</td>
+                    <td>Animates Local Scale</td>
+                </tr>
+                <tr>
+                    <td class="param-name">UI Rotation</td>
+                    <td>Animates Local Euler Rotation</td>
+                </tr>
+            </table>
+
+            <h2>UI Shake</h2>
+            <p>Shakes a UI element.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Anchor Pos</td>
+                    <td>Center point</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Strength</td>
+                    <td>Shake radius (X, Y pixels)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Fade Out</td>
+                    <td>Reduce shake over time</td>
+                </tr>
+            </table>
+
+            <h2>UI Text Counter</h2>
+            <p>Animates a number counting up/down.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>Text or TMP component</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Value</td>
+                    <td>Start and End numbers</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Format</td>
+                    <td>String format (e.g. "Score: {0}")</td>
                 </tr>
             </table>
         </div>
