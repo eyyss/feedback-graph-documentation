@@ -414,7 +414,8 @@
             <div class="nav-group">Node Reference</div>
             <a class="nav-item" onclick="openPage('page-camera')">Camera & Post Process</a>
             <a class="nav-item" onclick="openPage('page-transform')">Transform & Springs</a>
-            <a class="nav-item" onclick="openPage('page-visual')">Visual Effects</a>
+            <a class="nav-item" onclick="openPage('page-visual')">Particles & Lights</a>
+            <a class="nav-item" onclick="openPage('page-renderer')">Renderer & Materials</a>
             <a class="nav-item" onclick="openPage('page-audio')">Audio & Time</a>
             <a class="nav-item" onclick="openPage('page-animation')">Animation</a>
             <a class="nav-item" onclick="openPage('page-logic')">Logic & Utility</a>
@@ -449,7 +450,7 @@
             <h2>Key Features</h2>
             <div class="node-card">
                 <ul>
-                    <li><strong>63 Ready-to-Use Nodes</strong> - No coding required</li>
+                    <li><strong>52 Ready-to-Use Nodes</strong> - No coding required</li>
                     <li><strong>Visual Node Editor</strong> - Drag, drop, and connect</li>
                     <li><strong>Real-time Preview</strong> - See effects while playing</li>
                     <li><strong>Dynamic Parameters</strong> - Change values at runtime</li>
@@ -474,29 +475,44 @@
                     <th>Examples</th>
                 </tr>
                 <tr>
-                    <td class="param-name">Camera & Post</td>
-                    <td>12</td>
-                    <td>Shake, FOV Kick, Bloom, Vignette</td>
+                    <td class="param-name">Camera</td>
+                    <td>2</td>
+                    <td>FOV Kick, Screen Flash</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Post Processing</td>
+                    <td>8</td>
+                    <td>Bloom, Vignette, Chromatic Aberration, DOF, Grain, Hue Shift, Lens Distortion, AO</td>
                 </tr>
                 <tr>
                     <td class="param-name">Transform</td>
-                    <td>11</td>
-                    <td>Move, Rotate, Scale, Springs</td>
+                    <td>12</td>
+                    <td>Move, Rotate, Scale, Shake, Springs, Squash & Stretch</td>
                 </tr>
                 <tr>
-                    <td class="param-name">Visual</td>
-                    <td>7</td>
-                    <td>Particles, Color Pulse, Lights, Floating Text</td>
+                    <td class="param-name">Renderer</td>
+                    <td>3</td>
+                    <td>Color, Flash, Material Property</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Particles</td>
+                    <td>2</td>
+                    <td>Spawn, Play</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Light</td>
+                    <td>1</td>
+                    <td>Light Pulse</td>
                 </tr>
                 <tr>
                     <td class="param-name">Animation</td>
-                    <td>7</td>
-                    <td>Animators, CrossFades, Speed</td>
+                    <td>4</td>
+                    <td>Parameter, Play, CrossFade, Speed</td>
                 </tr>
                 <tr>
                     <td class="param-name">Audio</td>
-                    <td>3</td>
-                    <td>Play, Random, Volume</td>
+                    <td>2</td>
+                    <td>Play Sound, Random Sound</td>
                 </tr>
                 <tr>
                     <td class="param-name">Time</td>
@@ -505,8 +521,8 @@
                 </tr>
                 <tr>
                     <td class="param-name">Logic</td>
-                    <td>9</td>
-                    <td>Events, SetActive, Branch, Debug</td>
+                    <td>5</td>
+                    <td>Events, SetActive, Branch, Debug, Destroy</td>
                 </tr>
                 <tr>
                     <td class="param-name">Physics</td>
@@ -515,13 +531,18 @@
                 </tr>
                 <tr>
                     <td class="param-name">Cinemachine</td>
-                    <td>2</td>
-                    <td>Impulse, Noise</td>
+                    <td>4</td>
+                    <td>Impulse (V2/V3), Noise (V2/V3)</td>
                 </tr>
                 <tr>
                     <td class="param-name">UI</td>
-                    <td>8</td>
-                    <td>Fade, Move, Scale, Shake, Counter</td>
+                    <td>9</td>
+                    <td>Fade, Move, Scale, Shake, Counter, Rotation, Color, Fill, Floating Text</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Utility</td>
+                    <td>1</td>
+                    <td>Comment</td>
                 </tr>
             </table>
         </div>
@@ -780,26 +801,7 @@ void TakeDamage(float damage)
         <!-- CAMERA & POST PROCESS -->
         <div id="page-camera" class="page">
             <h1>📷 Camera & Post Process</h1>
-            <h2>Camera Shake</h2>
-            <p>Shakes the camera.</p>
-            <table>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Description</th>
-                </tr>
-                <tr>
-                    <td class="param-name">Tag</td>
-                    <td>Tag of camera to shake</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Duration</td>
-                    <td>Shake duration</td>
-                </tr>
-                <tr>
-                    <td class="param-name">Power</td>
-                    <td>Shake intensity</td>
-                </tr>
-            </table>
+
 
             <h2>FOV Kick</h2>
             <p>Temporarily changes Field of View.</p>
@@ -1240,6 +1242,34 @@ void TakeDamage(float damage)
                 </tr>
             </table>
 
+            <h2>Shake</h2>
+            <p>Shakes any transform (commonly used for camera shake).</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target Type</td>
+                    <td>Transform or Tag</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Transform/Tag</td>
+                    <td>Object to shake or tag to find</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Shake duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Power</td>
+                    <td>Shake intensity (0-5)</td>
+                </tr>
+            </table>
+            <div class="alert alert-tip">
+                <strong>Use Case:</strong> Camera shake on hit, object wobble, earthquake effects
+            </div>
+
             <h2>Squash & Stretch (Simple)</h2>
             <p>Simple squash animation without spring physics.</p>
             <table>
@@ -1279,9 +1309,9 @@ void TakeDamage(float damage)
             </table>
         </div>
 
-        <!-- VISUAL EFFECTS -->
+        <!-- PARTICLES & LIGHTS -->
         <div id="page-visual" class="page">
-            <h1>✨ Visual Effects</h1>
+            <h1>✨ Particles & Lights</h1>
             <h2>Particle Spawn / Play</h2>
             <p>Spawns or plays a Particle System.</p>
             <table>
@@ -1422,6 +1452,42 @@ void TakeDamage(float damage)
             <div class="alert alert-tip">
                 <strong>Use Case:</strong> Damage numbers, score popups, XP gains, critical hits
             </div>
+        </div>
+
+        <!-- RENDERER & MATERIALS -->
+        <div id="page-renderer" class="page">
+            <h1>🎨 Renderer & Materials</h1>
+
+            <h2>Renderer Color</h2>
+            <p>Animates the color of a Renderer's material.</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td class="param-name">Target</td>
+                    <td>GameObject with Renderer</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Color</td>
+                    <td>Target color</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Emission</td>
+                    <td>Target emission color (HDR)</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Duration</td>
+                    <td>Transition duration</td>
+                </tr>
+                <tr>
+                    <td class="param-name">Pulses</td>
+                    <td>Number of pulses (1-10)</td>
+                </tr>
+            </table>
+
+
             <h2>Renderer Flash</h2>
             <p>Flashes a Renderer's material color or emission.</p>
             <table>
